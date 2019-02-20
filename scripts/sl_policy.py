@@ -1,5 +1,5 @@
 from __future__ import division
-import tensorflow as tf 
+import tensorflow as tf
 import numpy as np
 from itertools import count
 import sys
@@ -69,6 +69,7 @@ def train():
 			try:
 				good_episodes = teacher(sample[0], sample[1], 5, env, graphpath)
 			except Exception as e:
+				print type(e).__name__ + ': ' + str(e)
 				print 'Cannot find a path'
 				continue
 
@@ -98,7 +99,7 @@ def test(test_episodes):
 
 	test_data = test_data[-test_episodes:]
 	print len(test_data)
-	
+
 	success = 0
 
 	saver = tf.train.Saver()

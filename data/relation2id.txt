@@ -1,0 +1,6 @@
+concept:foobar	0
+concept:foobar_inv	1
+concept:bar	2
+concept:bar_inv	3
+concept:foo	4
+concept:foo_inv	5

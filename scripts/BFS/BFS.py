@@ -30,7 +30,7 @@ class foundPaths(object):
 
 	def isFound(self, entity):
 		return self.entities[entity][0]
-			
+
 
 	def markFound(self, entity, prevNode, relation):
 		self.entities[entity] = (True, prevNode, relation)
@@ -53,4 +53,4 @@ class foundPaths(object):
 		res = ""
 		for entity, status in self.entities.iteritems():
 			res += entity + "[{},{},{}]".format(status[0],status[1],status[2])
-		return res			
+		return res

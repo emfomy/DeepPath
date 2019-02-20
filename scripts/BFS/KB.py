@@ -22,7 +22,7 @@ class KB(object):
 				break
 
 	def pickRandomIntermediatesBetween(self, entity1, entity2, num):
-		#TO DO: COULD BE IMPROVED BY NARROWING THE RANGE OF RANDOM EACH TIME ITERATIVELY CHOOSE AN INTERMEDIATE  
+		#TO DO: COULD BE IMPROVED BY NARROWING THE RANGE OF RANDOM EACH TIME ITERATIVELY CHOOSE AN INTERMEDIATE
 		from sets import Set
 		import random
 

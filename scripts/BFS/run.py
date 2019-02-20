@@ -36,7 +36,7 @@ def extract(line):
 
 def pickRandomIntermediatesFrom(kb, entity1, entity2, num_intermediates):
 	try:
-		return kb.pickRandomIntermediatesBetween(entity1, entity2, num_intermediates)	
+		return kb.pickRandomIntermediatesBetween(entity1, entity2, num_intermediates)
 	except ValueError as err:
 		print(err.args)
 

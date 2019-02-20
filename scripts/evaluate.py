@@ -4,15 +4,16 @@ import sys
 import numpy as np
 from BFS.KB import *
 from sklearn import linear_model
-from keras.models import Sequential 
+from keras.models import Sequential
 from keras.layers import Dense, Activation
 
 relation = sys.argv[1]
 
-dataPath_ = '../NELL-995/tasks/'  + relation
+from cfg import DATAPATH as dataPath
+dataPath_ = dataPath + '/tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
-relationId_path = '../NELL-995/relation2id.txt'
+relationId_path = dataPath + '/relation2id.txt'
 
 def train(kb, kb_inv, named_paths):
 	f = open(dataPath_ + '/train.pairs')
@@ -235,7 +236,7 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 					return False
 			left = left_next
 
-		else: 
+		else:
 			right_path.append(right_step)
 			end -= 1
 			for entity in right:
@@ -250,7 +251,7 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 			right = right_next
 
 	if len(right & left) != 0:
-		return True 
+		return True
 	return False
 
 

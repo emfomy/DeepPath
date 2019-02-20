@@ -1,0 +1,13 @@
+concept_foo	0
+concept_bar	1
+concept_baz	2
+concept_qux	3
+concept_quux	4
+concept_corge	5
+concept_grault	6
+concept_garply	7
+concept_waldo	8
+concept_fred	9
+concept_plugh	10
+concept_xyzzy	11
+concept_thud	12

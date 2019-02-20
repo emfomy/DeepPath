@@ -1,18 +1,19 @@
 #!/usr/bin/python
 
-import numpy as np 
+import numpy as np
 import sys
 from BFS.KB import *
 
 relation = sys.argv[1]
 
-dataPath_ = '../NELL-995/tasks/'  + relation
+from cfg import DATAPATH as dataPath
+dataPath_ = dataPath + '/tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
-relationId_path ='../NELL-995/' + 'relation2id.txt'
-ent_id_path = '../NELL-995/' + 'entity2id.txt'
-rel_id_path = '../NELL-995/' + 'relation2id.txt'
-test_data_path = '../NELL-995/tasks/'  + relation + '/sort_test.pairs'
+relationId_path =dataPath + '/relation2id.txt'
+ent_id_path = dataPath + '/entity2id.txt'
+rel_id_path = dataPath + '/relation2id.txt'
+test_data_path = dataPath + '/tasks/' + relation + '/sort_test.pairs'
 
 def bfs_two(e1,e2,path,kb,kb_inv):
 	start = 0
@@ -45,7 +46,7 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 					return False
 			left = left_next
 
-		else: 
+		else:
 			right_path.append(right_step)
 			end -= 1
 			for entity in right:
@@ -60,7 +61,7 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 			right = right_next
 
 	if len(right & left) != 0:
-		return True 
+		return True
 	return False
 	return False
 

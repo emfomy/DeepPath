@@ -44,7 +44,7 @@ class Env(object):
 	def interact(self, state, action):
 		'''
 		This function process the interact from the agent
-		state: is [current_position, target_position] 
+		state: is [current_position, target_position]
 		action: an integer
 		return: (reward, [new_postion, target_position], done)
 		'''
@@ -56,7 +56,7 @@ class Env(object):
 		for line in self.kb:
 			triple = line.rsplit()
 			e1_idx = self.entity2id_[triple[0]]
-			
+
 			if curr_pos == e1_idx and triple[2] == chosed_relation and triple[1] in self.entity2id_:
 				choices.append(triple)
 		if len(choices) == 0:

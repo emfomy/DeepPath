@@ -7,8 +7,10 @@ from BFS.KB import KB
 from BFS.BFS import BFS
 
 # hyperparameters
-state_dim = 200
-action_space = 400
+# state_dim = 200
+state_dim = 8
+# action_space = 400
+action_space = 6
 eps_start = 1
 eps_end = 0.1
 epe_decay = 1000
@@ -20,7 +22,7 @@ target_update_freq = 1000
 max_steps = 50
 max_steps_test = 50
 
-dataPath = '../NELL-995/'
+from cfg import DATAPATH as dataPath
 
 Transition = namedtuple('Transition', ('state', 'action', 'next_state', 'reward'))
 
@@ -49,7 +51,7 @@ def teacher(e1, e2, num_paths, env, path = None):
 			res_entity_lists.append(entity_list1 + entity_list2[1:])
 			res_path_lists.append(path_list1 + path_list2)
 	print 'BFS found paths:', len(res_path_lists)
-	
+
 	# ---------- clean the path --------
 	res_entity_lists_new = []
 	res_path_lists_new = []
@@ -83,7 +85,7 @@ def teacher(e1, e2, num_paths, env, path = None):
 				relations_new.append(item)
 		res_entity_lists_new.append(entities_new)
 		res_path_lists_new.append(relations_new)
-	
+
 	print res_entity_lists_new
 	print res_path_lists_new
 

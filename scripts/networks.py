@@ -1,4 +1,4 @@
-import tensorflow as tf 
+import tensorflow as tf
 
 def policy_nn(state, state_dim, action_dim, initializer):
 	w1 = tf.get_variable('W1', [state_dim, 512], initializer = initializer, regularizer=tf.contrib.layers.l2_regularizer(0.01))

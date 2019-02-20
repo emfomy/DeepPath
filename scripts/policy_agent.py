@@ -105,7 +105,7 @@ def REINFORCE(training_pairs, policy_nn, num_episodes):
 			path_length = len(env.path)
 			length_reward = 1/path_length
 			global_reward = 1
-			
+
 			# if len(path_found) != 0:
 			# 	path_found_embedding = [env.path_embedding(path.split(' -> ')) for path in path_found]
 			# 	curr_path_embedding = env.path_embedding(env.path_relations)
@@ -113,11 +113,11 @@ def REINFORCE(training_pairs, policy_nn, num_episodes):
 			# 	cos_sim = cosine_similarity(path_found_embedding, curr_path_embedding)
 			# 	diverse_reward = -np.mean(cos_sim)
 			# 	print 'diverse_reward', diverse_reward
-			# 	total_reward = 0.1*global_reward + 0.8*length_reward + 0.1*diverse_reward 
+			# 	total_reward = 0.1*global_reward + 0.8*length_reward + 0.1*diverse_reward
 			# else:
 			# 	total_reward = 0.1*global_reward + 0.9*length_reward
 			# path_found.add(' -> '.join(env.path_relations))
-			
+
 			total_reward = 0.1*global_reward + 0.9*length_reward
 			state_batch = []
 			action_batch = []
@@ -155,7 +155,7 @@ def REINFORCE(training_pairs, policy_nn, num_episodes):
 				print 'Teacher guideline failed'
 		print 'Episode time: ', time.time() - start
 		print '\n'
-	print 'Success percentage:', success/num_episodes 
+	print 'Success percentage:', success/num_episodes
 
 	for path in path_found_entity:
 		rel_ent = path.split(' -> ')
@@ -174,7 +174,7 @@ def REINFORCE(training_pairs, policy_nn, num_episodes):
 	f.close()
 	print 'Path stats saved'
 
-	return 
+	return
 
 def retrain():
 	print 'Start retraining'
@@ -250,7 +250,7 @@ def test():
 						print 'Episode ends due to step limit\n'
 					break
 				state_idx = new_state
-			
+
 			if done:
 				if len(path_set) != 0:
 					path_found_embedding = [env.path_embedding(path.split(' -> ')) for path in path_set]
@@ -259,7 +259,7 @@ def test():
 					cos_sim = cosine_similarity(path_found_embedding, curr_path_embedding)
 					diverse_reward = -np.mean(cos_sim)
 					print 'diverse_reward', diverse_reward
-					#total_reward = 0.1*global_reward + 0.8*length_reward + 0.1*diverse_reward 
+					#total_reward = 0.1*global_reward + 0.8*length_reward + 0.1*diverse_reward
 					state_batch = []
 					action_batch = []
 					for t, transition in enumerate(transitions):
@@ -306,7 +306,7 @@ if __name__ == "__main__":
 	else:
 		retrain()
 		test()
-	# retrain()	
+	# retrain()
 
 
 

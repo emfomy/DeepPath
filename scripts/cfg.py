@@ -1,2 +1,3 @@
 # DATAPATH = '../NELL-995/'
-DATAPATH = '../data/'
+# DATAPATH = '../data/demo/'
+DATAPATH = '../data/FB15K/'

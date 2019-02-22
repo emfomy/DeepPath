@@ -70,6 +70,8 @@ def train():
 				good_episodes = teacher(sample[0], sample[1], 5, env, graphpath)
 			except Exception as e:
 				print type(e).__name__ + ': ' + str(e)
+				import traceback
+				print traceback.format_exc()
 				print 'Cannot find a path'
 				continue
 

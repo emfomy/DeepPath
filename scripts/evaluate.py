@@ -10,10 +10,10 @@ from keras.layers import Dense, Activation
 relation = sys.argv[1]
 
 from cfg import DATAPATH as dataPath
-dataPath_ = dataPath + '/tasks/' + relation
+dataPath_ = dataPath + 'tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
-relationId_path = dataPath + '/relation2id.txt'
+relationId_path = dataPath + 'relation2id.txt'
 
 def train(kb, kb_inv, named_paths):
 	f = open(dataPath_ + '/train.pairs')
@@ -34,7 +34,8 @@ def train(kb, kb_inv, named_paths):
 		feature = []
 		for path in named_paths:
 				feature.append(int(bfs_two(sample[0], sample[1], path, kb, kb_inv)))
-		training_features.append(feature)
+		# training_features.append(feature)
+		training_features.append(feature[0])
 	model = Sequential()
 	input_dim = len(named_paths)
 	model.add(Dense(1, activation='sigmoid' ,input_dim=input_dim))

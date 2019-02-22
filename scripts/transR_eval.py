@@ -5,10 +5,12 @@ import numpy as np
 relation = sys.argv[1]
 
 from cfg import DATAPATH as dataPath
-dataPath_ = dataPath + '/tasks/' + relation
-ent_id_path = dataPath + '/entity2id.txt'
-rel_id_path = dataPath + '/relation2id.txt'
-test_data_path = dataPath + '/tasks/' + relation + '/sort_test.pairs'
+dataPath_ = dataPath + 'tasks/' + relation
+ent_id_path = dataPath + 'entity2id.txt'
+rel_id_path = dataPath + 'relation2id.txt'
+test_data_path = dataPath + 'tasks/' + relation + '/sort_test.pairs'
+
+from utils import embedding_dim
 
 f1 = open(ent_id_path)
 f2 = open(rel_id_path)
@@ -29,7 +31,7 @@ for line in content2:
 ent_vec = np.loadtxt(dataPath_ + '/entity2vec.bern')
 rel_vec = np.loadtxt(dataPath_ + '/relation2vec.bern')
 M = np.loadtxt(dataPath_ + '/A.bern')
-M = M.reshape([-1,50,50])
+M = M.reshape([-1,embedding_dim,embedding_dim])
 
 f = open(test_data_path)
 test_data = f.readlines()
@@ -55,7 +57,10 @@ y_score = []
 
 score_all = []
 
-rel = relation.replace("_", ":")
+# rel = relation.replace("_", ":")
+f = open(dataPath_+'/name')
+rel = f.read().strip()
+f.close()
 relation_vec = np.expand_dims(rel_vec[relation2id[rel],:],0)
 M_vec = M[relation2id[rel],:,:]
 

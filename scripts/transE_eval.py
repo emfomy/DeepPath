@@ -5,10 +5,10 @@ import numpy as np
 relation = sys.argv[1]
 
 from cfg import DATAPATH as dataPath
-dataPath_ = dataPath + '/tasks/' + relation
-ent_id_path = dataPath + '/entity2id.txt'
-rel_id_path = dataPath + '/relation2id.txt'
-test_data_path = dataPath + '/tasks/' + relation + '/sort_test.pairs'
+dataPath_ = dataPath + 'tasks/' + relation
+ent_id_path = dataPath + 'entity2id.txt'
+rel_id_path = dataPath + 'relation2id.txt'
+test_data_path = dataPath + 'tasks/' + relation + '/sort_test.pairs'
 
 f1 = open(ent_id_path)
 f2 = open(rel_id_path)
@@ -54,7 +54,10 @@ query_samples = []
 
 score_all = []
 
-rel = relation.replace("_", ":")
+# rel = relation.replace("_", ":")
+f = open(dataPath_+'/name')
+rel = f.read().strip()
+f.close()
 relation_vec = rel_vec[relation2id[rel],:]
 
 

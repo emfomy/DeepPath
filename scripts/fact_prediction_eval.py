@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 import numpy as np
 import sys
@@ -7,13 +7,15 @@ from BFS.KB import *
 relation = sys.argv[1]
 
 from cfg import DATAPATH as dataPath
-dataPath_ = dataPath + '/tasks/' + relation
+dataPath_ = dataPath + 'tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
-relationId_path =dataPath + '/relation2id.txt'
-ent_id_path = dataPath + '/entity2id.txt'
-rel_id_path = dataPath + '/relation2id.txt'
-test_data_path = dataPath + '/tasks/' + relation + '/sort_test.pairs'
+relationId_path =dataPath + 'relation2id.txt'
+ent_id_path = dataPath + 'entity2id.txt'
+rel_id_path = dataPath + 'relation2id.txt'
+test_data_path = dataPath + 'tasks/' + relation + '/sort_test.pairs'
+
+from utils import embedding_dim
 
 def bfs_two(e1,e2,path,kb,kb_inv):
 	start = 0
@@ -131,13 +133,16 @@ for line in content2:
 
 ent_vec_E = np.loadtxt(dataPath_ + '/entity2vec.unif')
 rel_vec_E = np.loadtxt(dataPath_ + '/relation2vec.unif')
-rel = relation.replace("_", ":")
+# rel = relation.replace("_", ":")
+f = open(dataPath_+'/name')
+rel = f.read().strip()
+f.close()
 relation_vec_E = rel_vec_E[relation2id[rel],:]
 
 ent_vec_R = np.loadtxt(dataPath_ + '/entity2vec.bern')
 rel_vec_R = np.loadtxt(dataPath_ + '/relation2vec.bern')
 M = np.loadtxt(dataPath_ + '/A.bern')
-M = M.reshape([-1,50,50])
+M = M.reshape([-1,embedding_dim,embedding_dim])
 relation_vec_R = rel_vec_R[relation2id[rel],:]
 M_vec = M[relation2id[rel],:,:]
 
@@ -276,7 +281,10 @@ for line in test_data:
 	test_labels.append(label)
 
 score_all = []
-rel = relation.replace("_", ":")
+# rel = relation.replace("_", ":")
+f = open(dataPath_+'/name')
+rel = f.read().strip()
+f.close()
 d_r = np.expand_dims(rel_vec[relation2id[rel],:],1)
 w_r = np.expand_dims(M[relation2id[rel],:],1)
 

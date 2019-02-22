@@ -19,8 +19,10 @@ class Env(object):
 		for line in self.relation2id:
 			self.relation2id_[line.split()[0]] = int(line.split()[1])
 			self.relations.append(line.split()[0])
-		self.entity2vec = np.loadtxt(dataPath + 'entity2vec.bern')
-		self.relation2vec = np.loadtxt(dataPath + 'relation2vec.bern')
+		# self.entity2vec = np.loadtxt(dataPath + 'entity2vec.bern')
+		# self.relation2vec = np.loadtxt(dataPath + 'relation2vec.bern')
+		self.entity2vec = np.loadtxt(dataPath + 'entity2vec.unif')
+		self.relation2vec = np.loadtxt(dataPath + 'relation2vec.unif')
 
 
 		self.path = []

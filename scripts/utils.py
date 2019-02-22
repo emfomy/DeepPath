@@ -8,19 +8,25 @@ from BFS.BFS import BFS
 
 # hyperparameters
 # state_dim = 200
-state_dim = 8
+# state_dim = 8
+state_dim = 20
 # action_space = 400
-action_space = 6
+# action_space = 6
+action_space = 2690
 eps_start = 1
 eps_end = 0.1
 epe_decay = 1000
 replay_memory_size = 10000
 batch_size = 128
-embedding_dim = 100
+# embedding_dim = 100
+# embedding_dim = 4
+embedding_dim = 10
 gamma = 0.99
 target_update_freq = 1000
-max_steps = 50
-max_steps_test = 50
+# max_steps = 50
+# max_steps_test = 50
+max_steps = 10
+max_steps_test = 10
 
 from cfg import DATAPATH as dataPath
 
@@ -40,6 +46,7 @@ def teacher(e1, e2, num_paths, env, path = None):
 	for line in content:
 		ent1, rel, ent2 = line.rsplit()
 		kb.addRelation(ent1, rel, ent2)
+
 	# kb.removePath(e1, e2)
 	intermediates = kb.pickRandomIntermediatesBetween(e1, e2, num_paths)
 	res_entity_lists = []

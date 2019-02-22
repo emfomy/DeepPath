@@ -4,7 +4,7 @@ We study the problem of learning to reason in large scale knowledge graphs (KGs)
 ## Access the dataset
 Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datasets/NELL-995.zip) [FB15k-237](http://nlp.cs.ucsb.edu/data/fb15k-237.tar.gz)
 
-## How to run our code 
+## How to run our code
 1. unzip the data, put the data folder in the code directory
 2. run the following scripts within `scripts/`
     *   `./pathfinder.sh ${relation_name}`  # find the reasoning paths, this is RL training, it might take sometime
@@ -12,7 +12,7 @@ Download the knowledge graph dataset [NELL-995](http://cs.ucsb.edu/~xwhan/datase
     *   `./link_prediction_eval.sh ${relation_name}` # calculate & print the link prediction results
 
     Examples (the relation_name can be found in `NELL-995/tasks/`):
-    * `./pathfinder.sh concept_athletehomestadium` 
+    * `./pathfinder.sh concept_athletehomestadium`
     * `./fact_prediction_eval.py concept_athletehomestadium`
     * `./link_prediction_eval.sh concept_athletehomestadium`
 3. Since we already put the reasoning paths in the dataset, you can directly run fact_prediction_eval.py or link_prediction_eval.sh to get the final results for each reasoning task

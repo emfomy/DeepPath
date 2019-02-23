@@ -23,7 +23,7 @@ def main():
             name, idx = line.strip().split()
             idx = int(idx)
             assert idx == len(id2entity)
-            id2entity.append('E#'+name)
+            id2entity.append('E!'+name)
 
     with open(os.path.join(oPath, 'entity2id.txt'), 'w') as fout:
         print('>> '+fout.name)
@@ -39,7 +39,7 @@ def main():
             name, idx = line.strip().split()
             idx = int(idx)
             assert idx == len(id2relation)
-            id2relation.append('R#'+name)
+            id2relation.append('R!'+name)
 
     with open(os.path.join(oPath, 'relation2id.txt'), 'w') as fout:
         print('>> '+fout.name)

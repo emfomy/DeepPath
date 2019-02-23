@@ -1,12 +1,14 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import numpy as np
 import sys
 from BFS.KB import *
 
+from cfg import DATAPATH as dataPath
+from util import *
+
 relation = sys.argv[1]
 
-from cfg import DATAPATH as dataPath
 dataPath_ = dataPath + 'tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
@@ -42,9 +44,9 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 						if path_.relation == left_step:
 							left_next.add(path_.connected_entity)
 				except Exception as e:
-					print 'left', len(left)
-					print left
-					print 'not such entity'
+					print_status('left', len(left))
+					print_status(left)
+					print_status('not such entity')
 					return False
 			left = left_next
 
@@ -57,8 +59,8 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 						if path_.relation == right_step:
 							right_next.add(path_.connected_entity)
 				except Exception as e:
-					print 'right', len(right)
-					print 'no such entity'
+					print_status('right', len(right))
+					print_status('no such entity')
 					return False
 			right = right_next
 
@@ -76,7 +78,7 @@ def get_features():
 		path = line.split('\t')[0]
 		num = int(line.split('\t')[1])
 		stats[path] = num
-	max_freq = np.max(stats.values())
+	max_freq = np.max(list(stats.values()))
 
 	relation2id = {}
 	f = open(relationId_path)
@@ -113,7 +115,7 @@ def get_features():
 			useful_paths.append(pathIndex)
 			named_paths.append(pathName)
 
-	print 'How many paths used: ', len(useful_paths)
+	print_status('How many paths used: ', len(useful_paths))
 	return useful_paths, named_paths
 
 f1 = open(ent_id_path)
@@ -188,9 +190,9 @@ scores_E = []
 scores_R = []
 scores_rl = []
 
-print 'How many queries: ', len(test_pairs)
+print_status('How many queries: ', len(test_pairs))
 for idx, sample in enumerate(test_pairs):
-	print 'Query No.%d of %d' % (idx, len(test_pairs))
+	print_status('Query No.%d of %d' % (idx, len(test_pairs)))
 	e1_vec_E = ent_vec_E[entity2id[sample[0]],:]
 	e2_vec_E = ent_vec_E[entity2id[sample[1]],:]
 	score_E = -np.sum(np.square(e1_vec_E + relation_vec_E - e2_vec_E))
@@ -210,9 +212,9 @@ for idx, sample in enumerate(test_pairs):
 	score_rl = sum(features)
 	scores_rl.append(score_rl)
 
-rank_stats_E = zip(scores_E, test_labels)
-rank_stats_R = zip(scores_R, test_labels)
-rank_stats_rl = zip(scores_rl, test_labels)
+rank_stats_E = list(zip(scores_E, test_labels))
+rank_stats_R = list(zip(scores_R, test_labels))
+rank_stats_rl = list(zip(scores_rl, test_labels))
 rank_stats_E.sort(key = lambda x:x[0], reverse=True)
 rank_stats_R.sort(key = lambda x:x[0], reverse=True)
 rank_stats_rl.sort(key = lambda x:x[0], reverse=True)
@@ -224,7 +226,7 @@ for idx, item in enumerate(rank_stats_E):
 		correct += 1
 		ranks.append(correct/(1.0+idx))
 ap1 = np.mean(ranks)
-print 'TransE: ', ap1
+print_status('TransE: ', ap1)
 
 correct = 0
 ranks = []
@@ -233,7 +235,7 @@ for idx, item in enumerate(rank_stats_R):
 		correct += 1
 		ranks.append(correct/(1.0+idx))
 ap2 = np.mean(ranks)
-print 'TransR: ', ap2
+print_status('TransR: ', ap2)
 
 
 correct = 0
@@ -243,7 +245,7 @@ for idx, item in enumerate(rank_stats_rl):
 		correct += 1
 		ranks.append(correct/(1.0+idx))
 ap3 = np.mean(ranks)
-print 'RL: ', ap3
+print_status('RL:     ', ap3)
 
 f1 = open(ent_id_path)
 f2 = open(rel_id_path)
@@ -289,7 +291,7 @@ d_r = np.expand_dims(rel_vec[relation2id[rel],:],1)
 w_r = np.expand_dims(M[relation2id[rel],:],1)
 
 for idx, sample in enumerate(test_pairs):
-	#print 'query node: ', sample[0], idx
+	#print_status('query node: ', sample[0], idx)
 	h = np.expand_dims(ent_vec[entity2id[sample[0]],:],1)
 	t = np.expand_dims(ent_vec[entity2id[sample[1]],:],1)
 
@@ -309,7 +311,7 @@ for idx, item in enumerate(stats):
 		correct += 1
 		ranks.append(correct/(1.0+idx))
 ap4 = np.mean(ranks)
-print 'TransH: ', ap4
+print_status('TransH: ', ap4)
 
 ent_vec_D = np.loadtxt(dataPath_ + '/entity2vec.vec_D')
 rel_vec_D = np.loadtxt(dataPath_ + '/relation2vec.vec_D')
@@ -344,5 +346,5 @@ for idx, item in enumerate(stats):
 		correct += 1
 		ranks.append(correct/(1.0+idx))
 ap5 = np.mean(ranks)
-print 'TransD: ', ap5
+print_status('TransD: ', ap5)
 

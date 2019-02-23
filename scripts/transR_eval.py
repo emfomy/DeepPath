@@ -1,10 +1,12 @@
-import cPickle
+import pickle
 import sys
 import numpy as np
 
+from cfg import DATAPATH as dataPath
+from util import *
+
 relation = sys.argv[1]
 
-from cfg import DATAPATH as dataPath
 dataPath_ = dataPath + 'tasks/' + relation
 ent_id_path = dataPath + 'entity2id.txt'
 rel_id_path = dataPath + 'relation2id.txt'
@@ -65,7 +67,7 @@ relation_vec = np.expand_dims(rel_vec[relation2id[rel],:],0)
 M_vec = M[relation2id[rel],:,:]
 
 for idx, sample in enumerate(test_pairs):
-	#print 'query node: ', sample[0], idx
+	#print_status('query node: ', sample[0], idx)
 	if sample[0] == query:
 		e1_vec = np.expand_dims(ent_vec[entity2id[sample[0]],:],0)
 		e2_vec = np.expand_dims(ent_vec[entity2id[sample[1]],:],0)
@@ -79,9 +81,9 @@ for idx, sample in enumerate(test_pairs):
 		y_true.append(test_labels[idx])
 	else:
 		query = sample[0]
-		count = zip(y_score, y_true)
+		count = list(zip(y_score, y_true))
 		count.sort(key = lambda x:x[0], reverse=True)
-		#print count
+		#print_status(count)
 		ranks = []
 		correct = 0
 		for idx_, item in enumerate(count):
@@ -92,8 +94,8 @@ for idx, sample in enumerate(test_pairs):
 			ranks.append(0)
 		aps.append(np.mean(ranks))
 		# if len(aps) % 10 == 0:
-			# print 'How many queries:', len(aps)
-			# print np.mean(aps)
+			# print_status('How many queries:', len(aps))
+			# print_status(np.mean(aps))
 		y_true = []
 		y_score = []
 
@@ -111,6 +113,6 @@ score_label = zip(score_all, test_labels)
 score_label_ranked = sorted(score_label, key = lambda x:x[0], reverse=True)
 
 mean_ap = np.mean(aps)
-print 'TransR MAP: ', mean_ap
+print_status('TransR MAP: ', mean_ap)
 
 

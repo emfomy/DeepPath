@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys
 import numpy as np
@@ -7,9 +7,11 @@ from sklearn import linear_model
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 
+from cfg import DATAPATH as dataPath
+from util import *
+
 relation = sys.argv[1]
 
-from cfg import DATAPATH as dataPath
 dataPath_ = dataPath + 'tasks/' + relation
 featurePath = dataPath_ + '/path_to_use.txt'
 feature_stats = dataPath_ + '/path_stats.txt'
@@ -40,7 +42,7 @@ def train(kb, kb_inv, named_paths):
 	input_dim = len(named_paths)
 	model.add(Dense(1, activation='sigmoid' ,input_dim=input_dim))
 	model.compile(optimizer = 'rmsprop', loss='binary_crossentropy', metrics=['accuracy'])
-	model.fit(training_features, train_labels, nb_epoch=300, batch_size=128)
+	model.fit(training_features, train_labels, epochs=300, batch_size=128)
 	return model
 
 def get_features():
@@ -67,7 +69,7 @@ def get_features():
 	paths = f.readlines()
 	f.close()
 
-	print len(paths)
+	print_status(len(paths))
 
 	for line in paths:
 		path = line.rstrip()
@@ -86,7 +88,7 @@ def get_features():
 			useful_paths.append(pathIndex)
 			named_paths.append(pathName)
 
-	print 'How many paths used: ', len(useful_paths)
+	print_status('How many paths used: ', len(useful_paths))
 	return useful_paths, named_paths
 
 def evaluate_logic():
@@ -134,7 +136,7 @@ def evaluate_logic():
 	score_all = []
 
 	for idx, sample in enumerate(test_pairs):
-		#print 'query node: ', sample[0], idx
+		#print_status('query node: ', sample[0], idx)
 		if sample[0] == query:
 			features = []
 			for path in named_paths:
@@ -150,7 +152,7 @@ def evaluate_logic():
 			y_true.append(test_labels[idx])
 		else:
 			query = sample[0]
-			count = zip(y_score, y_true)
+			count = list(zip(y_score, y_true))
 			count.sort(key = lambda x:x[0], reverse=True)
 			ranks = []
 			correct = 0
@@ -163,10 +165,10 @@ def evaluate_logic():
 				aps.append(0)
 			else:
 				aps.append(np.mean(ranks))
-			#print np.mean(ranks)
+			#print_status(np.mean(ranks))
 			# if len(aps) % 10 == 0:
-			# 	print 'How many queries:', len(aps)
-			# 	print np.mean(aps)
+			# 	print_status('How many queries:', len(aps))
+			# 	print_status(np.mean(aps))
 			y_true = []
 			y_score = []
 			features = []
@@ -181,9 +183,9 @@ def evaluate_logic():
 			score_all.append(score[0])
 			y_score.append(score)
 			y_true.append(test_labels[idx])
-			# print y_score, y_true
+			# print_status(y_score, y_true)
 
-	count = zip(y_score, y_true)
+	count = list(zip(y_score, y_true))
 	count.sort(key = lambda x:x[0], reverse=True)
 	ranks = []
 	correct = 0
@@ -197,7 +199,7 @@ def evaluate_logic():
 	score_label_ranked = sorted(score_label, key = lambda x:x[0], reverse=True)
 
 	mean_ap = np.mean(aps)
-	print 'RL MAP: ', mean_ap
+	print_status('RL MAP: ', mean_ap)
 
 
 def bfs_two(e1,e2,path,kb,kb_inv):
@@ -220,7 +222,7 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 		if len(left) < len(right):
 			left_path.append(left_step)
 			start += 1
-			#print 'left',start
+			#print_status('left',start)
 			# for triple in kb:
 			# 	if triple[2] == left_step and triple[0] in left:
 			# 		left_next.add(triple[1])
@@ -231,9 +233,9 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 						if path_.relation == left_step:
 							left_next.add(path_.connected_entity)
 				except Exception as e:
-					# print 'left', len(left)
-					# print left
-					# print 'not such entity'
+					# print_status('left', len(left))
+					# print_status(left)
+					# print_status('not such entity')
 					return False
 			left = left_next
 
@@ -246,8 +248,8 @@ def bfs_two(e1,e2,path,kb,kb_inv):
 						if path_.relation == right_step:
 							right_next.add(path_.connected_entity)
 				except Exception as e:
-					# print 'right', len(right)
-					# print 'no such entity'
+					# print_status('right', len(right))
+					# print_status('no such entity')
 					return False
 			right = right_next
 

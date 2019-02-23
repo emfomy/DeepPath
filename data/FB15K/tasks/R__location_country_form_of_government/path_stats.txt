@@ -1,1 +1,1 @@
-R:/government/form_of_government/countries@inv	1
+R!/government/form_of_government/countries@inv	1

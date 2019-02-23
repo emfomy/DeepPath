@@ -11,6 +11,9 @@ from BFS.KB import KB
 from BFS.BFS import BFS
 import time
 
+from cfg import DATAPATH as dataPath
+from util import *
+
 relation = sys.argv[1]
 # episodes = int(sys.argv[2])
 graphpath = dataPath + 'tasks/' + relation + '/' + 'graph.txt'
@@ -59,9 +62,9 @@ def train():
 		else:
 			num_episodes = num_samples
 
-		for episode in xrange(num_samples):
-			print "Episode %d" % episode
-			print 'Training Sample:', train_data[episode%num_samples][:-1]
+		for episode in range(num_samples):
+			print_title('Episode %d' % episode)
+			print_status('Training Sample:', train_data[episode%num_samples][:-1])
 
 			env = Env(dataPath, train_data[episode%num_samples])
 			sample = train_data[episode%num_samples].split()
@@ -69,10 +72,10 @@ def train():
 			try:
 				good_episodes = teacher(sample[0], sample[1], 5, env, graphpath)
 			except Exception as e:
-				print type(e).__name__ + ': ' + str(e)
+				print_error(exceptstr(e))
 				import traceback
-				print traceback.format_exc()
-				print 'Cannot find a path'
+				print(traceback.format_exc())
+				print_error('Cannot find a path')
 				continue
 
 			for item in good_episodes:
@@ -86,7 +89,7 @@ def train():
 				policy_nn.update(state_batch, action_batch)
 
 		saver.save(sess, 'models/policy_supervised_' + relation)
-		print 'Model saved'
+		print_subtitle('Model saved')
 
 
 def test(test_episodes):
@@ -100,16 +103,16 @@ def test(test_episodes):
 	test_num = len(test_data)
 
 	test_data = test_data[-test_episodes:]
-	print len(test_data)
+	print_status(len(test_data))
 
 	success = 0
 
 	saver = tf.train.Saver()
 	with tf.Session() as sess:
 		saver.restore(sess, 'models/policy_supervised_'+ relation)
-		print 'Model reloaded'
-		for episode in xrange(len(test_data)):
-			print 'Test sample %d: %s' % (episode,test_data[episode][:-1])
+		print_title('Model reloaded')
+		for episode in range(len(test_data)):
+			print_title('Test sample %d: %s' % (episode,test_data[episode][:-1]))
 			env = Env(dataPath, test_data[episode])
 			sample = test_data[episode].split()
 			state_idx = [env.entity2id_[sample[0]], env.entity2id_[sample[1]], 0]
@@ -120,15 +123,14 @@ def test(test_episodes):
 				reward, new_state, done = env.interact(state_idx, action_chosen)
 				if done or t == max_steps_test:
 					if done:
-						print 'Success'
+						print_info('Success')
 						success += 1
-					print 'Episode ends\n'
+					print_status('Episode ends\n')
 					break
 				state_idx = new_state
 
-	print 'Success persentage:', success/test_episodes
+	print_subtitle('Success persentage:', success/test_episodes)
 
 if __name__ == "__main__":
 	train()
 	# test(50)
-

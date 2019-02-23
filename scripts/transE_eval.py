@@ -1,10 +1,12 @@
-import cPickle
+import pickle
 import sys
 import numpy as np
 
+from cfg import DATAPATH as dataPath
+from util import *
+
 relation = sys.argv[1]
 
-from cfg import DATAPATH as dataPath
 dataPath_ = dataPath + 'tasks/' + relation
 ent_id_path = dataPath + 'entity2id.txt'
 rel_id_path = dataPath + 'relation2id.txt'
@@ -72,7 +74,7 @@ for idx, sample in enumerate(test_pairs):
 		query_samples.append(sample)
 	else:
 		query = sample[0]
-		count = zip(y_score, y_true, query_samples)
+		count = list(zip(y_score, y_true, query_samples))
 		count.sort(key = lambda x:x[0], reverse=True)
 
 		ranks = []
@@ -85,8 +87,8 @@ for idx, sample in enumerate(test_pairs):
 			ranks.append(0)
 		aps.append(np.mean(ranks))
 		# if len(aps) % 10 == 0:
-			# print 'How many queries:', len(aps)
-			# print np.mean(aps)
+			# print_status('How many queries:', len(aps))
+			# print_status(np.mean(aps))
 		y_true = []
 		y_score = []
 		query_samples = []
@@ -104,7 +106,7 @@ score_label_ranked = sorted(score_label, key = lambda x:x[0], reverse=True)
 
 
 mean_ap = np.mean(aps)
-print 'TransE MAP: ', mean_ap
+print_status('TransE MAP: ', mean_ap)
 
 
 

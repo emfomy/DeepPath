@@ -71,15 +71,15 @@ class Env(object):
 			path = random.choice(choices)
 			self.path.append(path[2] + ' -> ' + path[1])
 			self.path_relations.append(path[2])
-			# print 'Find a valid step', path
-			# print 'Action index', action
+			# print_status('Find a valid step', path)
+			# print_status('Action index', action)
 			self.die = 0
 			new_pos = self.entity2id_[path[1]]
 			reward = 0
 			new_state = [new_pos, target_pos, self.die]
 
 			if new_pos == target_pos:
-				print 'Find a path:', self.path
+				print_status('Find a path:', self.path)
 				done = 1
 				reward = 0
 				new_state = None

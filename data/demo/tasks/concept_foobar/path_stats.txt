@@ -1,1 +1,0 @@
-concept:foo -> concept:bar_inv	1

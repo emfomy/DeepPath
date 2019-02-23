@@ -56,10 +56,7 @@ query_samples = []
 
 score_all = []
 
-# rel = relation.replace("_", ":")
-f = open(dataPath_+'/name')
-rel = f.read().strip()
-f.close()
+rel = relation.replace("_", ":")
 relation_vec = rel_vec[relation2id[rel],:]
 
 

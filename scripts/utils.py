@@ -7,20 +7,15 @@ from BFS.KB import KB
 from BFS.BFS import BFS
 
 # hyperparameters
-# state_dim = 200
-# state_dim = 8
-state_dim = 20
-# action_space = 400
-# action_space = 6
-action_space = 2690
+state_dim = 200
+action_space = 400
 eps_start = 1
 eps_end = 0.1
 epe_decay = 1000
 replay_memory_size = 10000
 batch_size = 128
-# embedding_dim = 100
-# embedding_dim = 4
-embedding_dim = 10
+embedding_dim = 100
+embedding_dim2 = 50
 gamma = 0.99
 target_update_freq = 1000
 # max_steps = 50

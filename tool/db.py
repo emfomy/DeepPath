@@ -47,19 +47,25 @@ def main():
             print(f'{name}\t{idx}', file=fout)
         idx0 = len(id2relation)
         for idx, name in enumerate(id2relation):
-            print(f'{name}@inv\t{idx+idx0}', file=fout)
+            print(f'{name}_inv\t{idx+idx0}', file=fout)
 
     # KB
+    kb = []
     with open(os.path.join(iPath, 'test2id.txt'), 'r') as fin:
         print('<< '+fin.name)
         next(fin)
-        kb = [tuple(map(int, line.strip().split())) for line in fin]
+        kb += [tuple(map(int, line.strip().split())) for line in fin]
+
+    with open(os.path.join(iPath, 'valid2id.txt'), 'r') as fin:
+        print('<< '+fin.name)
+        next(fin)
+        kb += [tuple(map(int, line.strip().split())) for line in fin]
 
     with open(os.path.join(oPath, 'kb_env_rl.txt'), 'w') as fout:
         print('>> '+fout.name)
         for e1, e2, r in kb:
             print(f'{id2entity[e1]}\t{id2entity[e2]}\t{id2relation[r]}', file=fout)
-            print(f'{id2entity[e2]}\t{id2entity[e1]}\t{id2relation[r]}@inv', file=fout)
+            print(f'{id2entity[e2]}\t{id2entity[e1]}\t{id2relation[r]}_inv', file=fout)
 
     # train
     id2label = {1: '+', -1: '-'}

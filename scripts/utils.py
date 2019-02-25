@@ -43,6 +43,12 @@ def teacher(e1, e2, num_paths, env, path = None):
 
 	# kb.removePath(e1, e2)
 	intermediates = kb.pickRandomIntermediatesBetween(e1, e2, num_paths)
+
+	kb.entities.setdefault(e1, [])
+	kb.entities.setdefault(e2, [])
+	for e in intermediates:
+		kb.entities.setdefault(e, [])
+
 	res_entity_lists = []
 	res_path_lists = []
 	for i in range(num_paths):

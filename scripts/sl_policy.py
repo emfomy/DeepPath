@@ -34,7 +34,8 @@ class SupervisedPolicy(object):
 			action_mask = tf.cast(tf.one_hot(self.action, depth = action_space), tf.bool)
 			self.picked_action_prob = tf.boolean_mask(self.action_prob, action_mask)
 
-			self.loss = tf.reduce_sum(-tf.log(self.picked_action_prob)) + sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES, scope = 'supervised_policy'))
+			self.loss = tf.reduce_sum(-tf.log(self.picked_action_prob)) + \
+				sum(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES, scope = 'supervised_policy'))
 			self.optimizer = tf.train.AdamOptimizer(learning_rate = learning_rate)
 			self.train_op = self.optimizer.minimize(self.loss)
 
@@ -69,7 +70,7 @@ def _findpath(args):
 	return good_episodes
 
 def findpath():
-	print_title('>>> FIND PATH <<<')
+	print_title('>>> FINDING PATH <<<')
 
 	f = open(relationPath)
 	train_data = f.readlines()
@@ -86,7 +87,7 @@ def findpath():
 	return pathes
 
 def train(pathes):
-	print_title('>>> TRAIN <<<')
+	print_title('>>> TRAINING <<<')
 
 	tf.reset_default_graph()
 	policy_nn = SupervisedPolicy()

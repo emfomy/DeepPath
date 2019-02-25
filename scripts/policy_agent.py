@@ -177,7 +177,7 @@ def REINFORCE(training_pairs, policy_nn, num_episodes):
 	return
 
 def retrain():
-	print_status('Start retraining')
+	print_title('>>> Retraining <<<')
 	tf.reset_default_graph()
 	policy_network = PolicyNetwork(scope = 'supervised_policy')
 
@@ -197,6 +197,8 @@ def retrain():
 	print_status('Retrained model saved')
 
 def test():
+	print_title('>>> TESTING <<<')
+
 	tf.reset_default_graph()
 	policy_network = PolicyNetwork(scope = 'supervised_policy')
 

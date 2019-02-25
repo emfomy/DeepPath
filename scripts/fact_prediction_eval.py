@@ -17,7 +17,7 @@ ent_id_path = dataPath + 'entity2id.txt'
 rel_id_path = dataPath + 'relation2id.txt'
 test_data_path = dataPath + 'tasks/' + relation + '/sort_test.pairs'
 
-from utils import embedding_dim2
+from utils import embedding_dim0
 
 def bfs_two(e1,e2,path,kb,kb_inv):
 	start = 0
@@ -141,7 +141,7 @@ relation_vec_E = rel_vec_E[relation2id[rel],:]
 ent_vec_R = np.loadtxt(dataPath_ + '/entity2vec.bern')
 rel_vec_R = np.loadtxt(dataPath_ + '/relation2vec.bern')
 M = np.loadtxt(dataPath_ + '/A.bern')
-M = M.reshape([-1,embedding_dim2,embedding_dim2])
+M = M.reshape([-1,embedding_dim0,embedding_dim0])
 relation_vec_R = rel_vec_R[relation2id[rel],:]
 M_vec = M[relation2id[rel],:,:]
 

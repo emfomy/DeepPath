@@ -1,3 +1,3 @@
-# DATAPATH = '../NELL-995/'
+DATAPATH = '../../dataset/NELL-995/'
 # DATAPATH = '../data/demo/'
-DATAPATH = '../data/NELL-995-demo/'
+# DATAPATH = '../data/NELL-995-demo/'

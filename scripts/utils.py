@@ -15,13 +15,11 @@ epe_decay = 1000
 replay_memory_size = 10000
 batch_size = 128
 embedding_dim = 100
-embedding_dim2 = 50
+embedding_dim0 = 50
 gamma = 0.99
 target_update_freq = 1000
-# max_steps = 50
-# max_steps_test = 50
-max_steps = 10
-max_steps_test = 10
+max_steps = 50
+max_steps_test = 50
 
 from cfg import DATAPATH as dataPath
 from util import *

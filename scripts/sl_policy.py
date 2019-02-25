@@ -11,6 +11,9 @@ from BFS.KB import KB
 from BFS.BFS import BFS
 import time
 
+import multiprocessing
+import os
+
 from cfg import DATAPATH as dataPath
 from util import *
 
@@ -44,39 +47,56 @@ class SupervisedPolicy(object):
 		_, loss = sess.run([self.train_op, self.loss], {self.state: state, self.action: action})
 		return loss
 
-def train():
-	tf.reset_default_graph()
-	policy_nn = SupervisedPolicy()
+def _findpath(args):
+	episode, train_tuple = args
+
+	print_subtitle('Episode %d' % episode)
+	print_status('Training Sample:', train_tuple[:-1])
+
+	env = Env(dataPath, train_tuple)
+	sample = train_tuple.split()
+
+	good_episodes = []
+
+	try:
+		good_episodes = teacher(sample[0], sample[1], 5, env, graphpath)
+	except Exception as e:
+		print_error(exceptstr(e))
+		import traceback
+		print(traceback.format_exc())
+		print_error('Cannot find a path')
+
+	return good_episodes
+
+def findpath():
+	print_title('>>> FIND PATH <<<')
 
 	f = open(relationPath)
 	train_data = f.readlines()
 	f.close()
 
 	num_samples = len(train_data)
+	if num_samples > 500:
+		num_samples = 500
+	else:
+		num_episodes = num_samples
+
+	with multiprocessing.Pool() as pool:
+		pathes = pool.map(_findpath, enumerate(train_data[:num_samples]))
+	return pathes
+
+def train(pathes):
+	print_title('>>> TRAIN <<<')
+
+	tf.reset_default_graph()
+	policy_nn = SupervisedPolicy()
 
 	saver = tf.train.Saver()
 	with tf.Session() as sess:
 		sess.run(tf.global_variables_initializer())
-		if num_samples > 500:
-			num_samples = 500
-		else:
-			num_episodes = num_samples
 
-		for episode in range(num_samples):
-			print_title('Episode %d' % episode)
-			print_status('Training Sample:', train_data[episode%num_samples][:-1])
-
-			env = Env(dataPath, train_data[episode%num_samples])
-			sample = train_data[episode%num_samples].split()
-
-			try:
-				good_episodes = teacher(sample[0], sample[1], 5, env, graphpath)
-			except Exception as e:
-				print_error(exceptstr(e))
-				import traceback
-				print(traceback.format_exc())
-				print_error('Cannot find a path')
-				continue
+		for episode, good_episodes in enumerate(pathes):
+			print_subtitle('Episode %d' % episode)
 
 			for item in good_episodes:
 				state_batch = []
@@ -93,6 +113,8 @@ def train():
 
 
 def test(test_episodes):
+	print_title('>>> TEST <<<')
+
 	tf.reset_default_graph()
 	policy_nn = SupervisedPolicy()
 
@@ -110,9 +132,9 @@ def test(test_episodes):
 	saver = tf.train.Saver()
 	with tf.Session() as sess:
 		saver.restore(sess, 'models/policy_supervised_'+ relation)
-		print_title('Model reloaded')
+		print_subtitle('Model reloaded')
 		for episode in range(len(test_data)):
-			print_title('Test sample %d: %s' % (episode,test_data[episode][:-1]))
+			print_subtitle('Test sample %d: %s' % (episode,test_data[episode][:-1]))
 			env = Env(dataPath, test_data[episode])
 			sample = test_data[episode].split()
 			state_idx = [env.entity2id_[sample[0]], env.entity2id_[sample[1]], 0]
@@ -129,8 +151,9 @@ def test(test_episodes):
 					break
 				state_idx = new_state
 
-	print_subtitle('Success persentage:', success/test_episodes)
+	print_title('Success persentage:', success/test_episodes)
 
 if __name__ == "__main__":
-	train()
+	pathes = findpath()
+	train(pathes)
 	# test(50)
